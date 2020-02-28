@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.SignalR;
 using Service.Services;
 using System.Threading.Tasks;
 
@@ -25,8 +26,10 @@ namespace Hubs.Hubs {
             await SendDebug("LinkChatToGroup");
         }
 
-        public async Task Send(string message, string chatId) {
-            await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+        public async Task Send(Mensagem message, string chatId) {
+            //await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            message.Content = "> " + message.Content;
+            await Clients.Group(chatId).SendAsync("Receive", message);
 
             await SendDebug("Send");
         }
