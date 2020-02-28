@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Service.Services {
@@ -24,6 +25,7 @@ namespace Service.Services {
         }
 
         public void Create(Chat chat) {
+            chat.DataCriacao = DateTime.Now;
             _chatRepository.Create(chat);
         }
 

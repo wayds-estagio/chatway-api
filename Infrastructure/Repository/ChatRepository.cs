@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Context;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace Infrastructure.Repository {
         }
 
         public void Create(Chat chat) {
-            _chat.InsertOne(chat);
+            chat.Id = ObjectId.GenerateNewId().ToString();
+            //_chat.InsertOne(chat);
         }
 
         public List<Chat> Get() => _chat.Find(u => true).ToList();

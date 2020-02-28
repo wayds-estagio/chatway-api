@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Service.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace Hubs.Hubs {
@@ -20,6 +21,12 @@ namespace Hubs.Hubs {
             await SendDebug("OnConnectedAsync");
         }
 
+        public override async Task OnDisconnectedAsync(Exception exception) {
+            await base.OnDisconnectedAsync(exception);
+
+            await SendDebug("OnDisconnectedAsync");
+        }
+
         public async Task LinkChatToGroup(string chatId) {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
 
@@ -27,8 +34,16 @@ namespace Hubs.Hubs {
         }
 
         public async Task Send(Mensagem message, string chatId) {
+            //_mensagemService.Create(message);
             //await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
-            message.Content = "> " + message.Content;
+
+            //Chat chat = _chatService.Get(chatId);
+            //if (chat.Atendente == null) {
+            //    await Clients.OthersInGroup("Atendente").SendAsync("NewMessageChat", message);
+            //} else {
+            //    await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            //}
+
             await Clients.Group(chatId).SendAsync("Receive", message);
 
             await SendDebug("Send");

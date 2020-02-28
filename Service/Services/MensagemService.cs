@@ -21,13 +21,6 @@ namespace Service.Services {
         }
 
         public void Create(Mensagem mensagem) {
-            if (mensagem.Receiver == null) {
-                Chat chat = new Chat {
-                    //Motorista = mensagem.Remetente
-                };
-                _chatRepository.Create(chat);
-                mensagem.Receiver = chat.Id;
-            }
             _mensagemRepository.Create(mensagem);
         }
 
