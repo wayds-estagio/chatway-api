@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Service.Services {

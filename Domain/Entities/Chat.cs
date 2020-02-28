@@ -3,8 +3,6 @@
 namespace Domain.Entities {
 
     public class Chat : BaseEntity {
-
-
         public string Atendente { get; set; }
         public string Motorista { get; set; }
         public string Unidade { get; set; }
