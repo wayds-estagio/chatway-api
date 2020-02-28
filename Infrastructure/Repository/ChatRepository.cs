@@ -15,8 +15,7 @@ namespace Infrastructure.Repository {
         }
 
         public void Create(Chat chat) {
-            chat.Id = ObjectId.GenerateNewId().ToString();
-            //_chat.InsertOne(chat);
+            _chat.InsertOne(chat);
         }
 
         public List<Chat> Get() => _chat.Find(u => true).ToList();
