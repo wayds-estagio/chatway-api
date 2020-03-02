@@ -16,10 +16,10 @@ namespace Aplication.Controllers {
             _mensagemService = usuarioService;
         }
 
-        [HttpGet]
-        public ActionResult<List<Mensagem>> Get() {
+        [HttpGet("{chat}")]
+        public ActionResult<List<Mensagem>> Get(string chat) {
             try {
-                return Ok(_mensagemService.Get());
+                return Ok(_mensagemService.Get(chat));
             }
             catch (Exception ex) {
                 Console.WriteLine(ex);
@@ -27,20 +27,14 @@ namespace Aplication.Controllers {
             }
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<Mensagem> Get(string id) {
+        [HttpGet("{chat}/{id}")]
+        public ActionResult<Mensagem> Get(string chat, string id) {
             try {
-                var mensagem = _mensagemService.Get(id);
-
-                if (mensagem != null) {
-                    return Ok(mensagem);
-                }
-
-                return NoContent();
+                return Ok(_mensagemService.Get(id, chat));
             }
             catch (Exception ex) {
                 Console.WriteLine(ex);
-                return BadRequest("Erro ao buscar mensagem por id.");
+                return BadRequest("Erro ao buscar mensagens.");
             }
         }
 

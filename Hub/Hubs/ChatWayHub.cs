@@ -140,13 +140,17 @@ namespace Hubs.Hubs {
             await Groups.AddToGroupAsync(Context.ConnectionId, id);
         }
 
-        public Task SendAll(object message) {
-            return Clients.All.SendAsync("Receive", message);
-        }
+        public async Task Send(Mensagem message, string chatId) {
+            //_mensagemService.Create(message);
+            //await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            await Clients.OthersInGroup("chat").SendAsync("Receive", message);
 
-        public Task SendToCaller(object message) {
-            return Clients.Caller.SendAsync("Receive", message);
-        }
+            //Chat chat = _chatService.Get(chatId);
+            //if (chat.Atendente == null) {
+            //    await Clients.OthersInGroup("Atendente").SendAsync("NewMessageChat", message);
+            //} else {
+            //    await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            //}
 
         public Task SendGroup(string group, object message) {
             return Clients.Group(group).SendAsync("Receive", message);

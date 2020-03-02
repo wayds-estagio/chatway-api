@@ -27,7 +27,7 @@ namespace Application {
             services.AddSingleton<ChamadoService>();
             services.AddSingleton<MensagemService>();
             services.AddSingleton<ChatService>();
-            services.AddSingleton<FraseAjudaService>();
+            services.AddSingleton<MensagemPadraoService>();
 
             services.AddSingleton<EmpresaRepository>();
             services.AddSingleton<UnidadeRepository>();

@@ -44,6 +44,17 @@ namespace Aplication.Controllers {
             }
         }
 
+        [HttpGet("pendentes/{unidade}")]
+        public ActionResult<List<Chat>> GetPendentes(string unidade) {
+            try {
+                return Ok(_chatService.GetPendentes(unidade));
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+                return BadRequest("Erro ao buscar chats pendentes.");
+            }
+        }
+
         [HttpPost]
         public ActionResult Post([FromBody] Chat chat) {
             try {

@@ -19,11 +19,25 @@ namespace Service.Services {
             return _chatRepository.Get(id);
         }
 
-        public Chat GetPendente() {
-            return _chatRepository.GetPendente();
+        public List<Chat> GetPendentes(string unidade) {
+            //List<Chat> listChats = new List<Chat> {
+            //    new Chat {
+            //        Atendente = "Atendente",
+            //        Concluido = false,
+            //        Motorista = "Motorista",
+            //        Unidade = unidade,
+            //        DataCriacao = DateTime.Now
+            //    }
+            //};
+
+            //return listChats;
+            return _chatRepository.GetPendentes(unidade);
         }
 
         public void Create(Chat chat) {
+            chat.DataCriacao = DateTime.Now;
+            if (chat.Mensagens == null)
+                chat.Mensagens = new List<Mensagem>();
             _chatRepository.Create(chat);
         }
 

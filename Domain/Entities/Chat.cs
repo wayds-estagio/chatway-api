@@ -11,8 +11,6 @@ namespace Domain.Entities {
 
         public bool Concluido { get; set; }
         public DateTime DataCriacao { get; set; }
-
-        //public DateTime DataCriacao { get; set; } = DateTime.Now;
-        //public List<Mensagem> Mensagems { get; set; }
+        public List<Mensagem> Mensagens { get; set; }
     }
 }

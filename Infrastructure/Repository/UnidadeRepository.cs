@@ -18,7 +18,11 @@ namespace Infrastructure.Repository {
             return unidade;
         }
 
-        public List<Unidade> Get() => _unidade.Find(u => true).ToList();
+        public List<Unidade> Get() {
+            List<Unidade> lista = _unidade.Find(u => true).ToList();
+
+            return _unidade.Find(u => true).ToList();
+        }
 
         public Unidade Get(string id) => _unidade.Find<Unidade>(u => u.Id == id).FirstOrDefault();
 

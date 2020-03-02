@@ -1,28 +1,49 @@
 ﻿using Domain.Entities;
 using Infrastructure.Context;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 
 namespace Infrastructure.Repository {
 
     public class MensagemRepository {
-        private readonly IMongoCollection<Mensagem> _mensagem;
+        private readonly IMongoCollection<Chat> _chat;
 
         public MensagemRepository(ContextDB contextDB) {
-            _mensagem = contextDB.GetCollection<Mensagem>("mensagem");
+            _chat = contextDB.GetCollection<Chat>("chat");
         }
 
         public Mensagem Create(Mensagem mensagem) {
-            _mensagem.InsertOne(mensagem);
+            mensagem.Id = ObjectId.GenerateNewId().ToString();
+
+            var filter = Builders<Chat>.Filter.Where(x => x.Id == mensagem.Receiver);
+            var update = Builders<Chat>.Update.Push("Mensagens", mensagem);
+            var result = _chat.UpdateOneAsync(filter, update).Result;
+
             return mensagem;
         }
 
-        public List<Mensagem> Get() => _mensagem.Find(u => true).ToList();
+        public void UpdateItemTitle(Mensagem mensagem) {
+            var filter = Builders<Chat>.Filter.Where(x => x.Id == mensagem.Receiver);
+            var update = Builders<Chat>.Update.Push("Mensagens", mensagem);
+            var result = _chat.UpdateOneAsync(filter, update).Result;
+        }
 
-        public Mensagem Get(string id) => _mensagem.Find<Mensagem>(u => u.Id == id).FirstOrDefault();
+        public List<Mensagem> Get(string chatId) {
+            Chat chat = _chat.Find(u => u.Id == chatId).FirstOrDefault();
+            return chat.Mensagens;
+        }
 
-        public void Update(string id, Mensagem mensagem) => _mensagem.ReplaceOne(u => u.Id == id, mensagem);
+        public Mensagem Get(string id, string chat) {
+            var result = _chat.Find(u => u.Id == chat).FirstOrDefault();
 
-        public void Remove(string id) => _mensagem.DeleteOne(u => u.Id == id);
+            return result.Mensagens.Find(x => x.Id == id);
+        }
+
+        public void Update(string id, Mensagem mensagem) {
+            _chat.Find<Chat>(chat => chat.Id == id).FirstOrDefault();
+        }
+
+        public void Remove(string id) => _chat.DeleteOne(u => u.Id == id);
     }
 }

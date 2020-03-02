@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repository;
+using System;
 using System.Collections.Generic;
 
 namespace Service.Services {
@@ -12,22 +13,16 @@ namespace Service.Services {
             this._mensagemRepository = mensagem;
         }
 
-        public List<Mensagem> Get() {
-            return _mensagemRepository.Get();
+        public List<Mensagem> Get(string chat) {
+            return _mensagemRepository.Get(chat);
         }
 
-        public Mensagem Get(string id) {
-            return _mensagemRepository.Get(id);
+        public Mensagem Get(string id, string chat) {
+            return _mensagemRepository.Get(id, chat);
         }
 
         public void Create(Mensagem mensagem) {
-            if (mensagem.Chat == null) {
-                Chat chat = new Chat {
-                    //Motorista = mensagem.Remetente
-                };
-                _chatRepository.Create(chat);
-                mensagem.Chat = chat.Id;
-            }
+            mensagem.Time = DateTime.Now;
             _mensagemRepository.Create(mensagem);
         }
 
