@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Services;
 using System;
-using System.Collections.Generic;
 
 namespace Aplication.Controllers {
 
@@ -11,13 +10,19 @@ namespace Aplication.Controllers {
     [ApiController]
     public class MensagemController : ControllerBase {
         private readonly MensagemService _mensagemService;
+        //private readonly ChatWayHub _chatWayHub;
 
         public MensagemController(MensagemService usuarioService) {
             _mensagemService = usuarioService;
+            //_chatWayHub = chatWayHub;
         }
 
-        [HttpGet("{chat}")]
-        public ActionResult<List<Mensagem>> Get(string chat) {
+        [HttpGet]
+        public IActionResult Get([FromQuery] string chat, [FromQuery] string id) {
+            return id == null ? GetByChat(chat) : GetByChatAndId(chat, id);
+        }
+
+        public IActionResult GetByChat(string chat) {
             try {
                 return Ok(_mensagemService.Get(chat));
             }
@@ -27,8 +32,7 @@ namespace Aplication.Controllers {
             }
         }
 
-        [HttpGet("{chat}/{id}")]
-        public ActionResult<Mensagem> Get(string chat, string id) {
+        public IActionResult GetByChatAndId(string chat, string id) {
             try {
                 return Ok(_mensagemService.Get(id, chat));
             }
@@ -39,6 +43,7 @@ namespace Aplication.Controllers {
         }
 
         [HttpPost]
+        //[Route("NomeDaRota")]
         public ActionResult Post([FromBody] Mensagem mensagem) {
             try {
                 _mensagemService.Create(mensagem);

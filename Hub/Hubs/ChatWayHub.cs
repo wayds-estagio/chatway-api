@@ -28,23 +28,22 @@ namespace Hubs.Hubs {
         }
 
         public async Task LinkChatToGroup(string chatId) {
-            //await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
-            await Groups.AddToGroupAsync(Context.ConnectionId, "chat");
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
 
             await SendDebug("LinkChatToGroup");
         }
 
         public async Task Send(Mensagem message, string chatId) {
             _mensagemService.Create(message);
-            //await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
-            await Clients.OthersInGroup("chat").SendAsync("Receive", message);
+            await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
 
             Chat chat = _chatService.Get(chatId);
-            //if (chat.Atendente == null) {
-            //    await Clients.OthersInGroup("Atendente").SendAsync("NewMessageChat", message);
-            //} else {
-            //    await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
-            //}
+            if (chat.Atendente == null) {
+                await Clients.Group("Atendente").SendAsync("ReceiveChatOpen", message);
+            }
+            else {
+                await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            }
 
             await SendDebug("Send");
         }

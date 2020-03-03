@@ -15,8 +15,8 @@ namespace Aplication.Controllers {
             _mensagemPadraoService = mensagemPadraoService;
         }
 
-        [HttpGet("{unidade}")]
-        public ActionResult<string> Get(string unidade) {
+        [HttpGet]
+        public ActionResult<string> Get([FromQuery] string unidade) {
             try {
                 var mensagemPadrao = _mensagemPadraoService.Get(unidade);
 
@@ -32,8 +32,8 @@ namespace Aplication.Controllers {
             }
         }
 
-        [HttpPost("{unidade}")]
-        public ActionResult Post([FromBody] List<string> mensagemPadrao, string unidade) {
+        [HttpPost]
+        public ActionResult Post([FromBody] List<string> mensagemPadrao, [FromQuery] string unidade) {
             try {
                 _mensagemPadraoService.Create(mensagemPadrao, unidade);
 

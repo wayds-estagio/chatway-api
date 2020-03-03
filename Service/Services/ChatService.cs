@@ -21,17 +21,6 @@ namespace Service.Services {
         }
 
         public List<Chat> GetPendentes(string unidade) {
-            //List<Chat> listChats = new List<Chat> {
-            //    new Chat {
-            //        Atendente = "Atendente",
-            //        Concluido = false,
-            //        Motorista = "Motorista",
-            //        Unidade = unidade,
-            //        DataCriacao = DateTime.Now
-            //    }
-            //};
-
-            //return listChats;
             return _chatRepository.GetPendentes(unidade);
         }
 
