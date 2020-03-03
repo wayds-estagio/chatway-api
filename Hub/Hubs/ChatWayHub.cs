@@ -32,6 +32,12 @@ namespace Hubs.Hubs {
 
             await SendDebug("LinkChatToGroup");
         }
+        
+        public async Task CreateNewChat() {
+            await Clients.Group("Atendente").SendAsync("ReceiveNewChat", "asd");
+
+            await SendDebug("createNewChat");
+        }
 
         public async Task Send(Mensagem message, string chatId) {
             _mensagemService.Create(message);
