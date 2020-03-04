@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Infrastructure.Context;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +23,12 @@ namespace Infrastructure.Repository {
 
         public List<Chat> GetPendentes(string unidade) {
             FilterDefinition<Chat> filtro = Builders<Chat>.Filter.Where(chat => chat.Atendente == null && chat.Unidade == unidade);
+
+            return _chat.Find(filtro).ToList();
+        }
+
+        public List<Chat> GetAtendidos(string unidade) {
+            FilterDefinition<Chat> filtro = Builders<Chat>.Filter.Where(chat => chat.Atendente != null && chat.Unidade == unidade);
 
             return _chat.Find(filtro).ToList();
         }

@@ -24,6 +24,10 @@ namespace Service.Services {
             return _chatRepository.GetPendentes(unidade);
         }
 
+        public List<Chat> GetAtendidos(string unidade) {
+            return _chatRepository.GetAtendidos(unidade);
+        }
+
         public void Create(Chat chat) {
             chat.DataCriacao = DateTime.Now;
             if (chat.Mensagens == null)

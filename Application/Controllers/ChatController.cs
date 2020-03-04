@@ -55,6 +55,17 @@ namespace Aplication.Controllers {
             }
         }
 
+        [HttpGet("atendidos/{unidade}")]
+        public ActionResult<List<Chat>> GetAtendidos(string unidade) {
+            try {
+                return Ok(_chatService.GetAtendidos(unidade));
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+                return BadRequest("Erro ao buscar chats pendentes.");
+            }
+        }
+
         [HttpPost]
         public ActionResult Post([FromBody] Chat chat) {
             try {
