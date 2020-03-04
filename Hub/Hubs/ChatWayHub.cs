@@ -54,6 +54,11 @@ namespace Hubs.Hubs {
             await SendDebug("Send");
         }
 
+        public async Task SendAttendance(string chatId) {
+            await SendDebug("SendAttendance");
+            Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", "True");
+        }
+
         public Task SendDebug(string method) {
             return Clients.Caller.SendAsync("ReceiveDebug", method);
         }

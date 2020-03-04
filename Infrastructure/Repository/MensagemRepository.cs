@@ -17,7 +17,12 @@ namespace Infrastructure.Repository {
             mensagem.Id = ObjectId.GenerateNewId().ToString();
 
             var filter = Builders<Chat>.Filter.Where(x => x.Id == mensagem.Receiver);
-            var update = Builders<Chat>.Update.Push("Mensagens", mensagem);
+            //var update = Builders<Chat>.Update.Push("Mensagens", mensagem);
+
+            var update = Builders<Chat>.Update.PushEach(x => x.Mensagens, new List<Mensagem> { mensagem }, position: 0);
+
+            //var update = Builders<Chat>.Update.Set(x => x.Mensagens[0], mensagem);
+
             var result = _chat.UpdateOneAsync(filter, update).Result;
 
             return mensagem;
