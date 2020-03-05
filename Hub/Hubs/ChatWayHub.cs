@@ -32,7 +32,7 @@ namespace Hubs.Hubs {
 
             await SendDebug("LinkChatToGroup");
         }
-        
+
         public async Task CreateNewChat() {
             await Clients.Group("Atendente").SendAsync("ReceiveNewChat", "asd");
 
@@ -54,9 +54,10 @@ namespace Hubs.Hubs {
             await SendDebug("Send");
         }
 
-        public async Task SendAttendance(string chatId) {
+        public async Task SendAttendance(string chatId, Usuario atendente) {
+            _chatService.UpdateAtendente(chatId, atendente);
             await SendDebug("SendAttendance");
-            Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", "True");
+            await Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", "True");
         }
 
         public Task SendDebug(string method) {

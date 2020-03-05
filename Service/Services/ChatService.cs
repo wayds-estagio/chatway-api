@@ -24,8 +24,8 @@ namespace Service.Services {
             return _chatRepository.GetPendentes(unidade);
         }
 
-        public List<Chat> GetAtendidos(string unidade) {
-            return _chatRepository.GetAtendidos(unidade);
+        public List<Chat> GetAtendidos(string unidade, string atendente) {
+            return _chatRepository.GetAtendidos(unidade, atendente);
         }
 
         public void Create(Chat chat) {
@@ -37,6 +37,10 @@ namespace Service.Services {
 
         public void Update(string id, Chat chat) {
             _chatRepository.Update(id, chat);
+        }
+
+        public Chat UpdateAtendente(string id, Usuario atendente) {
+            return _chatRepository.UpdateAtendente(id, atendente);
         }
 
         public void Remove(string id) {

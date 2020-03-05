@@ -55,10 +55,10 @@ namespace Aplication.Controllers {
             }
         }
 
-        [HttpGet("atendidos/{unidade}")]
-        public ActionResult<List<Chat>> GetAtendidos(string unidade) {
+        [HttpGet("atendidos/{unidade}/{atendente}")]
+        public ActionResult<List<Chat>> GetAtendidos(string unidade, string atendente) {
             try {
-                return Ok(_chatService.GetAtendidos(unidade));
+                return Ok(_chatService.GetAtendidos(unidade, atendente));
             }
             catch (Exception ex) {
                 Console.WriteLine(ex);
@@ -86,6 +86,25 @@ namespace Aplication.Controllers {
 
                 if (chatVelho != null) {
                     _chatService.Update(id, chatNovo);
+                    return Ok(chatNovo);
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+                return BadRequest("Erro ao fazer update da chat.");
+            }
+        }
+
+        [HttpPut("atualizarAtendente/{id}")]
+        public ActionResult<Chat> UpdateAtendente(string id, [FromBody] Usuario atendente) {
+            try {
+                var chatVelho = _chatService.Get(id);
+
+                if (chatVelho != null) {
+                    Chat chatNovo = _chatService.UpdateAtendente(id, atendente);
+
                     return Ok(chatNovo);
                 }
 

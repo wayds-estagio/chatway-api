@@ -27,10 +27,20 @@ namespace Infrastructure.Repository {
             return _chat.Find(filtro).ToList();
         }
 
-        public List<Chat> GetAtendidos(string unidade) {
-            FilterDefinition<Chat> filtro = Builders<Chat>.Filter.Where(chat => chat.Atendente != null && chat.Unidade == unidade);
+        public List<Chat> GetAtendidos(string unidade, string atendente) {
+            FilterDefinition<Chat> filtro = Builders<Chat>.Filter.Where(chat => chat.AtendenteId == atendente && chat.Unidade == unidade);
 
             return _chat.Find(filtro).ToList();
+        }
+        public Chat UpdateAtendente(string id, Usuario atendente) {
+            Chat newChat = _chat.Find(chat => chat.Id == id).FirstOrDefault();
+
+            newChat.Atendente = atendente.Nome;
+            newChat.AtendenteId = atendente.Id;
+
+            _chat.ReplaceOne(chat => chat.Id == id, newChat);
+
+            return newChat;
         }
 
         public void Update(string id, Chat chat) => _chat.ReplaceOne(chat => chat.Id == id, chat);
