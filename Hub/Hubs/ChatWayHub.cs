@@ -41,7 +41,7 @@ namespace Hubs.Hubs {
 
         public async Task Send(Mensagem message, string chatId) {
             _mensagemService.Create(message);
-            await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
+            //await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
 
             Chat chat = _chatService.Get(chatId);
             if (chat.Atendente == null) {
@@ -57,7 +57,7 @@ namespace Hubs.Hubs {
         public async Task SendAttendance(string chatId, Usuario atendente) {
             _chatService.UpdateAtendente(chatId, atendente);
             await SendDebug("SendAttendance");
-            await Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", "True");
+            await Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", atendente);
         }
 
         public Task SendDebug(string method) {
