@@ -30,11 +30,11 @@ namespace Hubs.Hubs {
         public async Task LinkChatToGroup(string chatId) {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
 
-            await SendDebug("LinkChatToGroup");
+            await SendDebug("LinkChatToGroup: " + chatId);
         }
 
-        public async Task CreateNewChat() {
-            await Clients.Group("Atendente").SendAsync("ReceiveNewChat", "asd");
+        public async Task CreateNewChat(Chat chat) {
+            await Clients.Group("Atendente").SendAsync("ReceiveNewChatOpen", chat);
 
             await SendDebug("createNewChat");
         }
@@ -45,19 +45,20 @@ namespace Hubs.Hubs {
 
             Chat chat = _chatService.Get(chatId);
             if (chat.Atendente == null) {
-                await Clients.Group("Atendente").SendAsync("ReceiveChatOpen", message);
+                await Clients.Group("Atendente").SendAsync("ReceiveMessageOpen", message);
             }
             else {
+                await Clients.OthersInGroup(chatId).SendAsync("ReceiveMessageAttendance", message);
                 await Clients.OthersInGroup(chatId).SendAsync("Receive", message);
             }
 
             await SendDebug("Send");
         }
 
-        public async Task SendAttendance(string chatId, Usuario atendente) {
+        public async Task sendChatAttendant(string chatId, Usuario atendente) {
             _chatService.UpdateAtendente(chatId, atendente);
-            await SendDebug("SendAttendance");
-            await Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendance", atendente);
+            await SendDebug("sendChatAttendant");
+            await Clients.OthersInGroup(chatId).SendAsync("ReceiveAttendant", atendente);
         }
 
         public Task SendDebug(string method) {
